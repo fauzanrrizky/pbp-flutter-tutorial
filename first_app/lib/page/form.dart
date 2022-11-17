@@ -1,4 +1,5 @@
 import 'package:first_app/main.dart';
+import 'package:first_app/page/to_do_page.dart';
 import 'package:flutter/material.dart';
 
 class MyFormPage extends StatefulWidget {
@@ -10,6 +11,7 @@ class MyFormPage extends StatefulWidget {
 
 class _MyFormPageState extends State<MyFormPage> {
   final _formKey = GlobalKey<FormState>();
+
   String _namaLengkap = "";
   bool jenjangSarjana = false;
   bool jenjangDiploma = false;
@@ -26,6 +28,7 @@ class _MyFormPageState extends State<MyFormPage> {
       appBar: AppBar(
         title: Text('Form'),
       ),
+      // Menambahkan drawer menu
       drawer: Drawer(
         child: Column(
           children: [
@@ -50,6 +53,16 @@ class _MyFormPageState extends State<MyFormPage> {
                 );
               },
             ),
+            ListTile(
+              title: const Text('To Do'),
+              onTap: () {
+                // Route menu ke halaman to do
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ToDoPage()),
+                );
+              },
+            ),
           ],
         ),
       ),
@@ -57,14 +70,8 @@ class _MyFormPageState extends State<MyFormPage> {
         key: _formKey,
         child: SingleChildScrollView(
           child: Container(
-            margin: const EdgeInsets.all(8),
             padding: const EdgeInsets.all(20.0),
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey),
-              borderRadius: BorderRadius.circular(5),
-            ),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
                   // Menggunakan padding sebesar 8 pixels
@@ -101,60 +108,73 @@ class _MyFormPageState extends State<MyFormPage> {
                     },
                   ),
                 ),
-                const ListTile(
-                  leading: Icon(Icons.school),
-                  title: Text("Jenjang"),
-                ),
-                CheckboxListTile(
-                  title: const Text('Sarjana'),
-                  value: jenjangSarjana,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      jenjangSarjana = value!;
-                      if (value) {
-                        jenjangMagister =
-                            jenjangDiploma = jenjangDoktor = false;
-                      }
-                    });
-                  },
-                ),
-                CheckboxListTile(
-                  title: const Text('Diploma'),
-                  value: jenjangDiploma,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      jenjangDiploma = value!;
-                      if (value) {
-                        jenjangMagister =
-                            jenjangSarjana = jenjangDoktor = false;
-                      }
-                    });
-                  },
-                ),
-                CheckboxListTile(
-                  title: const Text('Magister'),
-                  value: jenjangMagister,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      jenjangMagister = value!;
-                      if (value) {
-                        jenjangDiploma = jenjangSarjana = jenjangDoktor = false;
-                      }
-                    });
-                  },
-                ),
-                CheckboxListTile(
-                  title: const Text('Doktor'),
-                  value: jenjangDoktor,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      jenjangDoktor = value!;
-                      if (value) {
-                        jenjangMagister =
-                            jenjangSarjana = jenjangDiploma = false;
-                      }
-                    });
-                  },
+                Container(
+                  margin: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const ListTile(
+                        leading: Icon(Icons.school),
+                        title: Text("Jenjang"),
+                      ),
+                      CheckboxListTile(
+                        title: const Text('Sarjana'),
+                        value: jenjangSarjana,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            jenjangSarjana = value!;
+                            if (value) {
+                              jenjangMagister =
+                                  jenjangDiploma = jenjangDoktor = false;
+                            }
+                          });
+                        },
+                      ),
+                      CheckboxListTile(
+                        title: const Text('Diploma'),
+                        value: jenjangDiploma,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            jenjangDiploma = value!;
+                            if (value) {
+                              jenjangMagister =
+                                  jenjangSarjana = jenjangDoktor = false;
+                            }
+                          });
+                        },
+                      ),
+                      CheckboxListTile(
+                        title: const Text('Magister'),
+                        value: jenjangMagister,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            jenjangMagister = value!;
+                            if (value) {
+                              jenjangDiploma =
+                                  jenjangSarjana = jenjangDoktor = false;
+                            }
+                          });
+                        },
+                      ),
+                      CheckboxListTile(
+                        title: const Text('Doktor'),
+                        value: jenjangDoktor,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            jenjangDoktor = value!;
+                            if (value) {
+                              jenjangMagister =
+                                  jenjangSarjana = jenjangDiploma = false;
+                            }
+                          });
+                        },
+                      ),
+                    ],
+                  ),
                 ),
                 ListTile(
                   leading: const Icon(Icons.co_present),
@@ -207,6 +227,10 @@ class _MyFormPageState extends State<MyFormPage> {
                   secondary: const Icon(Icons.run_circle_outlined),
                 ),
                 TextButton(
+                  child: const Text(
+                    "Simpan",
+                    style: TextStyle(color: Colors.white),
+                  ),
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Colors.blue),
                   ),
@@ -227,27 +251,23 @@ class _MyFormPageState extends State<MyFormPage> {
                                 shrinkWrap: true,
                                 children: <Widget>[
                                   Center(
-                                    child: Column(
-                                      children: [
-                                        const Text('Informasi Data'),
-                                        Text('Nama: $_namaLengkap'),
-                                        Text('Jenjang: ' +
-                                            (jenjangDiploma
-                                                ? 'Diploma'
-                                                : jenjangDoktor
-                                                    ? 'Doktor'
-                                                    : jenjangMagister
-                                                        ? 'Magister'
-                                                        : jenjangSarjana
-                                                            ? 'Sarjana'
-                                                            : 'Tidak ada')),
-                                        Text('Umur: $umur'),
-                                        Text('Kelas: $kelasPBP'),
-                                      ],
-                                    ),
+                                      child: const Text('Informasi Data',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold))),
+                                  SizedBox(height: 20),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text("Nama: " + _namaLengkap),
+                                      Text("Umur: " + umur.round().toString()),
+                                      Text(
+                                          "Jenjang: ${jenjangSarjana ? "Sarjana" : jenjangDiploma ? "Diploma" : jenjangMagister ? "Magister" : jenjangDoktor ? "Doktor" : "Undefined"}"),
+                                      Text("Kelas PBP: " + kelasPBP),
+                                      Text(
+                                          "Practice Mode: ${_nilaiSwitch ? "Yes" : "No"}"),
+                                    ],
                                   ),
                                   SizedBox(height: 20),
-                                  // TODO: Munculkan informasi yang didapat dari form
                                   TextButton(
                                     onPressed: () {
                                       Navigator.pop(context);
@@ -262,10 +282,6 @@ class _MyFormPageState extends State<MyFormPage> {
                       );
                     }
                   },
-                  child: const Text(
-                    "Simpan",
-                    style: TextStyle(color: Colors.white),
-                  ),
                 ),
               ],
             ),
